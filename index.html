@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Weather App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </head>
 <body>
     
@@ -14,14 +16,14 @@
 
             <div class="date-container">
                 <div class="time" id="time">
-                    12:30 <span id="am-pm">PM</span>
+                    <div id="times">12:30 <span id="am-pm">PM</span></div>
                 </div>
                 <div class="date" id="date">
-                    Monday, 25 May
+                    <div id="dates">Monday, 25 May</div> 
                 </div>
 
                 <div class="others" id="current-weather-items">
-                    <div class="weather-item">
+                    <!-- <div class="weather-item">
                         <div>Humidity</div>
                         <div>${humidity}%</div>
                     </div>
@@ -35,13 +37,26 @@
                     <div class="weather-item">
                         <div>Sunrise</div>
                         <div>${sunrise}%</div>
-                    </div><div class="weather-item">
+                    </div>
+                    <div class="weather-item">
                     <div>Sunset</div>
                     <div>${sunset}%</div>
                     </div>
+                     -->
                     
-                </div>
+                </div> 
+                <div class="forms" id="current-weather-items">
+                    <form onsubmit="getWeathers(); return false">
+                    <label >City Name :   <input type="text" id="weathers"></label>
+                    <button type="submit">Get Weather</button>
+                    </form>
+                    
+                </div> 
+               
             </div>
+            
+
+           
 
             <div class="place-container">
                 <div class="time-zone" id="time-zone">Asia/Karachi</div>
@@ -53,17 +68,18 @@
     </div>
 
     <div class="future-forecast">
-        <div class="today" id="current-temp">
+        <!-- <div class="today" id="current-temp">
             <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather icon" class="w-icon">
             <div class="other">
                 <div class="day">Monday</div>
                 <div class="temp">Night - 25.6&#176; C</div>
                 <div class="temp">Day - 35.6&#176; C</div>
             </div>
-        </div>
+        </div> -->
 
         <div class="weather-forecast" id="weather-forecast">
-            <div class="weather-forecast-item">
+           
+            <!-- <div class="weather-forecast-item">
                 <div class="day">Tue</div>
                 <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather icon" class="w-icon">
                 <div class="temp">Night - 25.6&#176; C</div>
@@ -92,7 +108,7 @@
                 <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather icon" class="w-icon">
                 <div class="temp">Night - 25.6&#176; C</div>
                 <div class="temp">Day - 35.6&#176; C</div>
-            </div>
+            </div> -->
 
         </div>
     </div>

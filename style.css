@@ -10,7 +10,8 @@ body{
     background:url('https://images.unsplash.com/photo-1621274403997-37aace184f49?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1');
     background-repeat: no-repeat;
     background-size:cover;
-    overflow:hidden;
+    overflow-y: scroll;
+    /* overflow:hidden; */
     height: 100vh;
     font-family: 'Poppins', sans-serif;
 }
@@ -56,15 +57,34 @@ body{
 }
 
 .current-info .others{
-    display: flex;
+    display: inline-flex;
+    flex-direction: column;
+    background: rgba(24,24,27, 0.6);
+    padding:20px;
+    width: 250px;
+    border-radius: 10px;
+    margin: 10px 10px;
+    border: 1px solid #eee;
+}
+
+.forms{
+   
+    display: inline-flex;
     flex-direction: column;
     background: rgba(24,24,27, 0.6);
     padding:20px;
     border-radius: 10px;
-    margin: 10px 0;
+    margin-left: 150px;
     border: 1px solid #eee;
 }
+.forms input{
+    padding: 5px;
+    border-radius: 11px;
+}
 
+.weather-item img{
+margin: auto;
+}
 .current-info .others .weather-item{
     display: flex;
     justify-content: space-between;
@@ -74,7 +94,8 @@ body{
 .future-forecast{
     background: rgba(24,24,27,0.8);
     padding: 25px;
-    position: fixed;
+    overflow-x: scroll;
+    /* position: fixed; */
     bottom: 0;
     display: flex;
     color:white;
@@ -110,10 +131,12 @@ body{
 
 .future-forecast .weather-forecast{
     display: flex;
+    overflow-x: scroll;
 }
 
 .weather-forecast .weather-forecast-item{
     display: flex;
+    
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -122,10 +145,11 @@ body{
     padding: 15px;
     border-radius: 10px;
     background: rgba(0,0,0,0.2)
+    
 }
 
 .weather-forecast .weather-forecast-item .day{
-    padding: 5px 15px;
+    padding: 5px 10px;
     background: #3C3C44;
     border-radius: 50px;
     text-align: center;
@@ -154,6 +178,7 @@ body{
     }
 
     .date-container .time{
+       
         font-size: 50px;
     }
 

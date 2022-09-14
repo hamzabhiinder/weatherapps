@@ -1,98 +1,98 @@
-let timeEl = document.querySelector("#time").value
-let dateEl = document.querySelector("#date").value
-let currentWeatherItemsEl = document.querySelector("#current-weather-items")
-let timezone = document.querySelector("#time-zone").value
-let country = document.querySelector("#country").value
-let weatherForecastEl = document.querySelector("#weather-forecast")
-let currentTempEl = document.querySelector("#current-temp")
 
 
-let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-let API_KEY = 'd306ac66498d23b3c3af932f22a954d8';
+function getWeathers() {
 
-setInterval(() => {
-    let time = new Date()
-    let month = time.getMonth()
-    let date = time.getDate()
-    let day = time.getDay()
-    let hour = time.getHours()
-    let hoursIn24Format = hour >= 13 ? hour % 12 : hour
-    let minute = time.getMinutes()
-    let ampm = hour >= 12 ? 'PM' : 'AM'
-    document.querySelector("#time").innerHTML = hoursIn24Format + ':' + minute + ' ' + `<span id="am-pm">${ampm}</span>`
+    //Weather Now
+    let city = document.querySelector('#weathers').value
+    document.querySelector('#time').innerHTML=` <div id="times">${moment().format("hh:MM A")}</div>`
 
-    document.querySelector("#date").innerHTML = days[day] + ', ' + date + ' ' + months[month]
-}, 1000);
 
-getWeatherData()
-function getWeatherData() {
-    navigator.geolocation.getCurrentPosition((success) => {
-        console.log(success)
+    //let weatherNow=document.querySelector('.others');
+  //  weatherNow.innerHTML="";
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc01c173f257e8b5b606f8771a1e900d&units=metric`)
+        .then(function (response) {
+            console.log(response.data)
 
-        let { latitude, longitude } = success.coords
+          
 
-        fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&units=metric&appid=${API_KEY}`).then(res => res.json()).then(data => {
-            console.log(data)
-            showWeatherData(data);
+           document.querySelector('.place-container').innerHTML= ` 
+            <div class="time-zone" id="time-zone">${response.data.name}</div>
+            <div id="country" class="country">${response.data.sys.country}</div>`
+           
+            
+            document.querySelector('.others').innerHTML=    `
+            
+        <div class="weather-item">
+        <img src="" id="icon"/>
+        </div>
+        <div class="weather-item">
+        <div>Now</div>
+        <div>${response?.data?.main.temp.toFixed(01)} &#8451</div>
+        </div>
+         <div class="weather-item">
+        <div>Max Temp</div>
+        <div>${response?.data?.main?.temp_max.toFixed(01)} &#8451</div>
+        </div>  <div class="weather-item">
+        <div>Min Temp</div>
+        <div>${response?.data?.main?.temp_min.toFixed(01)} &#8451</div>
+        </div>
+        <div class="weather-item">
+        <div>Humidity</div>
+        <div>${response.data.main.humidity.toFixed(1)} &#8451</div>
+        </div>
+        <div class="weather-item">
+        <div>feel like</div>
+        <div>${response.data.main.feels_like.toFixed(1)} &#8451</div>
+        </div>
+        `
+        document.querySelector("#icon").src = `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+
+        }).catch(function (error) {
+            console.log(error)
         })
-    });
 
 
-}
-
-function showWeatherData(data) {
-    let { humidity, pressure, sunrise, sunset, wind_speed } = data.current;
-
-    currentWeatherItemsEl.innerHTML =
-        `<div class="weather-item">
-    <div>Humidity</div>
-    <div>${humidity}%</div>
-</div>
-<div class="weather-item">
-    <div>Pressure</div>
-    <div>${pressure}%</div>
-</div>  <div class="weather-item">
-    <div>Wind</div>
-    <div>${wind_speed}%</div>
-</div>
-<div class="weather-item">
-    <div>Sunrise</div>
-    <div>${sunrise}%</div>
-</div><div class="weather-item">
-<div>Sunset</div>
-<div>${sunset}%</div>
-</div>
-`
+            //Get 5 day data
 
 
-let otherDayForcast = ''
-data.daily.forEach((day, idx) => {
-    if(idx == 0){
-        document.querySelector("#current-temp").innerHTML = `
-        <img src="http://openweathermap.org/img/wn//${day.weather[0].icon}@4x.png" alt="weather icon" class="w-icon">
-        <div class="other">
-            <div class="day">${window.moment(day.dt*1000).format('dddd')}</div>
-            <div class="temp">Night - ${day.temp.night}&#176;C</div>
-            <div class="temp">Day - ${day.temp.day}&#176;C</div>
-        </div>
+            
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=fc01c173f257e8b5b606f8771a1e900d&units=metric`)
+        .then(function(response){
+           console.log( response.data)
+
+         
+           document.querySelector('#date').innerHTML= `
+          <div id="dates"> ${moment(response.data.list[0].dt_txt).format("dddd, D MMM")} </div>  `
+
+           
+           let divdata= document.querySelector('#weather-forecast')
+           divdata.innerHTML="";
+           response.data.list.map(eachitem=>{
+            divdata.innerHTML +=   ` 
+              
+            <div class="weather-forecast-item">
+           <div class="day">${moment(eachitem.dt_txt).format('ddd   ')}</div>
+           
+           <div class="day">${moment(eachitem.dt_txt).format('hh:00 a')}</div>
+           <img src="http://openweathermap.org/img/wn/${eachitem.weather[0].icon}@2x.png" alt="weather icon" class="w-icon">
+            <div class="temp">${eachitem.main.temp_min.toFixed(0)} &#176;C - ${response.data.list[0].main.temp_min.toFixed(0)} &#176;C</div>
+            <div class="temp">feel like ${eachitem.main.feels_like} &#176;C</div>
+        </div>`
+        })
+
+          
+
+     //  http://openweathermap.org/img/wn/10d@2x.png
+       //document.querySelector("#w-icon").innerHTML = `http://openweathermap.org/img/wn/${response.data.list[0].weather[0].icon}@2x.png`
+
+
+        }).catch(function (error){
+            console.log(error.data)
+        })
         
-        `
-    }else{
-        otherDayForcast += `
-        <div class="weather-forecast-item">
-            <div class="day">${window.moment(day.dt*1000).format('ddd')}</div>
-            <img src="http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" alt="weather icon" class="w-icon">
-            <div class="temp">Night - ${day.temp.night}&#176;C</div>
-            <div class="temp">Day - ${day.temp.day}&#176;C</div>
-        </div>
-        
-        `
-    }
-})
 
 
-weatherForecastEl.innerHTML = otherDayForcast;
+
 
 }
